@@ -7,6 +7,7 @@ public abstract class Sliceable : MonoBehaviour
     
     [SerializeField] private AudioClip sliceSound;
     [SerializeField] private GameObject sliceEffect;
+    [SerializeField] private float sliceEffectDuration = 5f;
 
     public void Slice() {
         SliceBehaviour();
@@ -15,7 +16,12 @@ public abstract class Sliceable : MonoBehaviour
             AudioSource.PlayClipAtPoint(sliceSound, transform.position);
 
         if (sliceEffect != null)
-            Instantiate(sliceEffect, transform.position, Quaternion.identity);
+        {
+            GameObject sliceEffectInstance = Instantiate(sliceEffect, transform.position, Quaternion.identity);
+            Destroy(sliceEffectInstance, sliceEffectDuration);
+        }
+
+        Destroy(gameObject);
     }
 
     
