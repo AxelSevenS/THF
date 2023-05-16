@@ -28,7 +28,12 @@ public sealed class UIManager : Singleton<UIManager>
         if (incrementText == null)
             return;
 
-        incrementText.text = Math.Sign(scoreToAdd) < 0 ? $"- {scoreToAdd}" : $"+ {scoreToAdd}";
+        if (scoreToAdd < 0)
+            incrementText.color = Color.red;
+        else
+            incrementText.color = Color.green;
+
+        incrementText.text = scoreToAdd < 0 ? $"- {Mathf.Abs(scoreToAdd)}" : $"+ {scoreToAdd}";
     }
 
 

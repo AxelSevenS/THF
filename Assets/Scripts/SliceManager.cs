@@ -5,13 +5,22 @@ using UnityEngine;
 
 using UnityEngine.EventSystems;
 
+using System.Linq;
+
 public sealed class SliceManager : Singleton<SliceManager>, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+
+    public static List<Sliceable> sliceables = new List<Sliceable>();
+
+    [SerializeField] private Camera camera;
+
+    public float maxSliceDistance;
 
     [SerializeField] private GameObject slicePrefab;
     [SerializeField] private LayerMask sliceLayerMask;
     
     private TrailRenderer sliceEffect;
+    private float sliceLength;
     private AudioClip sliceSound;
 
 
@@ -24,32 +33,44 @@ public sealed class SliceManager : Singleton<SliceManager>, IBeginDragHandler, I
 
         GameObject sliceEffectGO = GameObject.Instantiate(slicePrefab, mousePos, Quaternion.identity);
         sliceEffect = sliceEffectGO.GetComponent<TrailRenderer>();
+
+        sliceLength = 0f;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
 
+        if ( !sliceEffect )
+            return;
+
         // Add a new point to the trail renderer
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = -1f;
 
         Vector3 direction = mousePos - sliceEffect.transform.position;
 
-        if ( Physics.SphereCast(sliceEffect.transform.position, 1f, direction, out RaycastHit hit, direction.magnitude, sliceLayerMask) ) 
+
+        float radius = .25f;
+        Vector3 origin = sliceEffect.transform.position + direction.normalized * Mathf.Min(radius, direction.magnitude);
+        Vector3 end = sliceEffect.transform.position - direction.normalized * Mathf.Min(radius, direction.magnitude);
+
+        var overlaps = Physics.OverlapCapsule(origin, end, radius, sliceLayerMask, QueryTriggerInteraction.Collide);
+        foreach (var sliceable in overlaps)
         {
-            Sliceable sliceable = hit.collider.GetComponent<Sliceable>();
-            sliceable?.Slice();
+            sliceable.GetComponent<Sliceable>()?.Slice();
         }
+        
 
         sliceEffect.transform.position = mousePos;
-        
+        sliceLength += direction.magnitude;
+
+        // if (sliceLength > maxSliceDistance)
+        //     OnEndDrag(eventData);
 
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (sliceEffect != null)
-            Destroy(sliceEffect.gameObject, 0.5f);
 
         sliceEffect = null;
     }

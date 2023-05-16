@@ -16,7 +16,6 @@ public class ScoreEffect : MonoBehaviour
     private void Update()
     {
         float lifeTime = Time.time - startTime;
-        Debug.Log(lifeTime);
 
         if (lifeTime > this.lifeTime)
             Destroy(gameObject);

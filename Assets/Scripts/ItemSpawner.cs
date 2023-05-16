@@ -23,7 +23,7 @@ public class ItemSpawner : Singleton<ItemSpawner>
     private void SpawnItem()
     {
 
-        if (items.Count == 0) 
+        if ( !items.TryPop(out GameObject item) || !item ) 
         {
             CancelInvoke();
             return;
@@ -35,16 +35,12 @@ public class ItemSpawner : Singleton<ItemSpawner>
         Vector3 throwPosition = camera.ViewportToWorldPoint(new Vector3(0.5f, 1f, 0) + Random.insideUnitSphere * range);
         throwPosition.z = -1f;
 
-        Debug.DrawLine(spawnPoint, throwPosition, Color.red, 1f);
+        GameObject spawnedItem = Instantiate(item, spawnPoint, Quaternion.identity);
 
-        GameObject spawnedItem = Instantiate(items.Pop(), spawnPoint, Quaternion.identity);
-        Destroy(spawnedItem, 10f);
-
-        const float strengh = 1.1f;
+        const float strength = 1.1f;
 
         Rigidbody rb = spawnedItem.GetComponent<Rigidbody>();
-        rb.AddForce((throwPosition - spawnPoint) * strengh, ForceMode.Impulse);
-        rb.AddTorque(Random.insideUnitSphere * strengh, ForceMode.Impulse);
+        rb.AddForce((throwPosition - spawnPoint) * strength, ForceMode.Impulse);
     }
 
     private void OnEnable()
