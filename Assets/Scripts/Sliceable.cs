@@ -11,6 +11,10 @@ public abstract class Sliceable : MonoBehaviour
     [SerializeField] private float sliceEffectDuration = 5f;
 
     public void Slice() {
+
+        if ( !enabled )
+            return;
+
         SliceBehaviour();
 
         if (sliceSound != null)

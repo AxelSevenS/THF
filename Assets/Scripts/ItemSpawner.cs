@@ -7,15 +7,16 @@ public class ItemSpawner : Singleton<ItemSpawner>
 {
 
     [SerializeField] private Camera camera;
-    [SerializeField] private SerializableStack<GameObject> items;
     [SerializeField] private float range = 1f;
+
+    private SerializableStack<GameObject> items;
 
 
 
     public void StartSpawning(float delay, float throwRange, IEnumerable<GameObject> itemsToSpawn)
     {
         CancelInvoke();
-        // items = new SerializableStack<GameObject>(itemsToSpawn);
+        items = new SerializableStack<GameObject>(itemsToSpawn);
         range = throwRange;
         InvokeRepeating(nameof(SpawnItem), delay, delay);
     }
@@ -26,6 +27,7 @@ public class ItemSpawner : Singleton<ItemSpawner>
         if ( !items.TryPop(out GameObject item) || !item ) 
         {
             CancelInvoke();
+            GameManager.current.EndGame();
             return;
         }
 
@@ -37,15 +39,15 @@ public class ItemSpawner : Singleton<ItemSpawner>
 
         GameObject spawnedItem = Instantiate(item, spawnPoint, Quaternion.identity);
 
-        const float strength = 1.1f;
+        Debug.DrawLine(spawnPoint, throwPosition, Color.red, 5f);
 
-        Rigidbody rb = spawnedItem.GetComponent<Rigidbody>();
-        rb.AddForce((throwPosition - spawnPoint) * strength, ForceMode.Impulse);
+        if ( spawnedItem.TryGetComponent<Rigidbody>(out Rigidbody rb) )
+            rb.AddForce((throwPosition - spawnPoint), ForceMode.Impulse);
     }
 
     private void OnEnable()
     {
         SetCurrent();
-        StartSpawning(1f, 0.1f, items);
+        // StartSpawning(1f, 0.1f, items);
     }
 }

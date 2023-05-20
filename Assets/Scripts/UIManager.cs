@@ -5,6 +5,7 @@ using SevenGame.Utility;
 using TMPro;
 using UnityEngine;
 
+[DefaultExecutionOrder(10)]
 public sealed class UIManager : Singleton<UIManager>
 {
 
@@ -47,15 +48,24 @@ public sealed class UIManager : Singleton<UIManager>
         scoreUI.SetActive(false);
     }
 
-    public void UpdateScore(int score)
+    public void UpdateScore()
     {
-        scoreText.text = $"Score: {score}";
+        scoreText.text = $"Score: {GameManager.current.score}";
+    }
+
+    public void UpdateLife()
+    {
+
     }
 
     private void OnEnable()
     {
         SetCurrent();
-        UpdateScore(0);
+        UpdateScore();
         EnableGameUI();
+    }
+
+    private void Start()
+    {
     }
 }
