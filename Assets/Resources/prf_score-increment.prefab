@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1448999590596673616}
   - component: {fileID: 1448999590596673617}
   m_Layer: 5
-  m_Name: Score Effect
+  m_Name: prf_score-increment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

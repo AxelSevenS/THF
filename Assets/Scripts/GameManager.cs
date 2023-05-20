@@ -8,16 +8,24 @@ using UnityEngine;
 public sealed class GameManager : Singleton<GameManager>
 {
 
+
     [SerializeField] private Camera environmentCamera;
     [SerializeField] private Camera sliceCamera;
 
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [Header("Difficulty Menu")]
 
-    [SerializeField] private GameObject _menuPrefab;
+    [SerializeField] private GameObject _menuContainer;
+    [SerializeField] private GameObject _easyOptionPrefab;
+    [SerializeField] private GameObject _mediumOptionPrefab;
+    [SerializeField] private GameObject _hardOptionPrefab;
+
+    [Header("Difficulty-Specific Items")]
 
     [SerializeField] private GameObject[] _easyItems;
     [SerializeField] private GameObject[] _mediumItems;
     [SerializeField] private GameObject[] _hardItems;
+
+    [Header("Game Variables")]
 
     public int score = 0;
     public int lives = 3;
@@ -28,35 +36,96 @@ public sealed class GameManager : Singleton<GameManager>
     private readonly Vector3 _gamePosition = new Vector3(0, 4.85f, 81f);
     private readonly Quaternion _gameRotation = Quaternion.Euler(9f, 172f, 0f);
 
+    private GameDifficulty currentDifficulty = GameDifficulty.Easy;
+
     private Vector3 _targetPosition;
     private Quaternion _targetRotation;
 
 
-    public void StartMenu() {
+
+    public void StartMenu()
+    {
+        Time.timeScale = 1f;
+
+        ItemSpawner.current?.StopSpawning();
+
         _targetPosition = _menuPosition;
         _targetRotation = _menuRotation;
 
         Vector3 menuPosition = sliceCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
         menuPosition.z = -1f;
-        Instantiate(_menuPrefab, menuPosition, Quaternion.identity);
+        Instantiate(_easyOptionPrefab, _menuContainer.transform);
+        Instantiate(_mediumOptionPrefab, _menuContainer.transform);
+        Instantiate(_hardOptionPrefab, _menuContainer.transform);
 
         UIManager.current?.DisableGameUI();
     }
 
     public void StartGame()
     {
+        Time.timeScale = 1f;
+
+        ItemSpawner.current?.StopSpawning();
+
         _targetPosition = _gamePosition;
         _targetRotation = _gameRotation;
 
-        ItemSpawner.current?.StartSpawning(4f, 0.1f, _easyItems);
-
         UIManager.current?.EnableGameUI();
+
+        switch( currentDifficulty )
+        {
+            case GameDifficulty.Easy:
+                EasyGame();
+                break;
+            case GameDifficulty.Medium:
+                MediumGame();
+                break;
+            case GameDifficulty.Hard:
+                HardGame();
+                break;
+        }
+
+        lives = 3;
+        UIManager.current?.UpdateLivesImmediate();
+
+        score = 0;
+        UIManager.current?.UpdateScore();
+        
+        void EasyGame()
+        {
+            ItemSpawner.current?.StartSpawning(4f, 0.1f, _easyItems);
+        }
+
+        void MediumGame()
+        {
+            ItemSpawner.current?.StartSpawning(3f, 0.2f, _mediumItems);
+        }
+
+        void HardGame()
+        {
+            ItemSpawner.current?.StartSpawning(1f, 0.4f, _hardItems);
+        }
+    }
+
+    public void StartGame(GameDifficulty difficulty)
+    {
+        Time.timeScale = 1f;
+
+        currentDifficulty = difficulty;
+
+        StartGame();
     }
 
     
 
     public void AddScore(int scoreToAdd, Vector3 position)
     {
+        if ( scoreToAdd <= 0 )
+        {
+            // if the score is negative, spawn the effect at the center of the screen
+            position = sliceCamera.ScreenToWorldPoint(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+        }
+
         UIManager.current?.SpawnScoreEffect(position, scoreToAdd);
         score += scoreToAdd;
         UIManager.current?.UpdateScore();
@@ -70,23 +139,29 @@ public sealed class GameManager : Singleton<GameManager>
 
     public void RemoveLife()
     {
-        Debug.Log("Remove Life");
+        lives--;
+        UIManager.current?.UpdateLives();
+        if ( lives <= 0 )
+        {
+            GameManager.current?.GameOver();
+        }
     }
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
+        UIManager.current?.DisplayGameOver();
     }
 
     public void EndGame()
     {
-        Debug.Log("End Game");
+        UIManager.current?.DisplayGameWon();
     }
 
     public void RestartGame()
     {
-        Debug.Log("Restart Game");
+        StartGame();
     }
+
 
 
     private void Start() 
@@ -104,5 +179,14 @@ public sealed class GameManager : Singleton<GameManager>
     {
         SetCurrent();
         score = 0;
+    }
+
+
+
+    public enum GameDifficulty
+    {
+        Easy,
+        Medium,
+        Hard
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5502397927065260206}
   - component: {fileID: 1630436991577537848}
   m_Layer: 3
-  m_Name: SliceEffect
+  m_Name: prf_slice-trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

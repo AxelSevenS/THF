@@ -21,13 +21,17 @@ public class ItemSpawner : Singleton<ItemSpawner>
         InvokeRepeating(nameof(SpawnItem), delay, delay);
     }
 
+    public void StopSpawning()
+    {
+        CancelInvoke();
+    }
+
     private void SpawnItem()
     {
 
         if ( !items.TryPop(out GameObject item) || !item ) 
         {
-            CancelInvoke();
-            GameManager.current.EndGame();
+            StopSpawning();
             return;
         }
 
@@ -43,6 +47,18 @@ public class ItemSpawner : Singleton<ItemSpawner>
 
         if ( spawnedItem.TryGetComponent<Rigidbody>(out Rigidbody rb) )
             rb.AddForce((throwPosition - spawnPoint), ForceMode.Impulse);
+
+
+        if ( items.Count == 0 )
+        {
+            StopSpawning();
+            Invoke(nameof(EndGame), 3.5f);
+        }
+    }
+
+    private void EndGame()
+    {
+        GameManager.current.EndGame();
     }
 
     private void OnEnable()

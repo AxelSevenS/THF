@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5183835419927740075}
   m_Layer: 3
   m_Name: Negi
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77b7f0aed3540f4cbad54258f0f2a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sliceSound: {fileID: 0}
+  sliceSound: {fileID: 8300000, guid: 33f2a9333e356314f8d4950a0ead7e88, type: 3}
   sliceEffect: {fileID: 0}
   sliceEffectDuration: 5
   rb: {fileID: 3097218086918877421}
