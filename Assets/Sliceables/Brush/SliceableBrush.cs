@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SliceableBrush : Sliceable
+public class SliceableBrush : SliceableRigidbody
 {
     public override void SliceBehaviour()
     {
         SliceManager.sliceables.Remove(this);
-        foreach (Sliceable sliceable in SliceManager.sliceables)
+        Sliceable[] sliceables = SliceManager.sliceables.ToArray();
+        foreach (Sliceable sliceable in sliceables)
         {
             sliceable?.Slice();
         }

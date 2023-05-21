@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliceSound: {fileID: 8300000, guid: bb718760d8b5d0e40be27cc6dc501430, type: 3}
+  pitchRange: 0.02
   sliceEffect: {fileID: 0}
   sliceEffectDuration: 5
   rigidbody: {fileID: 1762878984709092906}

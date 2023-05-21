@@ -7,6 +7,8 @@ public abstract class Sliceable : MonoBehaviour
 {
     
     [SerializeField] private AudioClip sliceSound;
+    [SerializeField] private float pitchRange = 0.1f;
+    
     [SerializeField] private GameObject sliceEffect;
     [SerializeField] private float sliceEffectDuration = 5f;
 
@@ -17,8 +19,20 @@ public abstract class Sliceable : MonoBehaviour
 
         SliceBehaviour();
 
-        if (sliceSound != null)
-            AudioSource.PlayClipAtPoint(sliceSound, transform.position);
+        // AudioSource.PlayClipAtPoint doesn't allow for pitch changes
+        // so we have to create a temporary game object with an audio source
+        // this is better than setting up the component on the object itself
+        if (sliceSound != null) {
+
+            GameObject tempGO = new GameObject("TempAudio");
+            tempGO.transform.position = transform.position;
+            AudioSource audioSource = tempGO.AddComponent<AudioSource>();
+            audioSource.clip = sliceSound;
+            audioSource.pitch = Random.Range(1f - pitchRange, 1f + pitchRange);
+            audioSource.Play();
+
+            Destroy(tempGO, sliceSound.length);
+        }
 
         if (sliceEffect != null)
         {

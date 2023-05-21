@@ -6907,6 +6907,10 @@ MonoBehaviour:
   - {fileID: 2355893063463833263, guid: 10716f49eb868fe48a95b62d266188fb, type: 3}
   - {fileID: 2355893063463833263, guid: 10716f49eb868fe48a95b62d266188fb, type: 3}
   - {fileID: 2355893063463833263, guid: 10716f49eb868fe48a95b62d266188fb, type: 3}
+  - {fileID: 5168193826838739829, guid: 86cabafe273e14443b8848710500a4bd, type: 3}
+  - {fileID: 5168193826838739829, guid: 86cabafe273e14443b8848710500a4bd, type: 3}
+  - {fileID: 5168193826838739829, guid: 86cabafe273e14443b8848710500a4bd, type: 3}
+  - {fileID: 5168193826838739829, guid: 86cabafe273e14443b8848710500a4bd, type: 3}
   _mediumItems:
   - {fileID: 8326875147741482208, guid: a0146ffd1663c59469a8a50dfa07b5fa, type: 3}
   - {fileID: 8326875147741482208, guid: a0146ffd1663c59469a8a50dfa07b5fa, type: 3}
@@ -6919,7 +6923,6 @@ MonoBehaviour:
   - {fileID: 4275651654610461166, guid: 542f3dd16ed66ff488d2e4a2c3371660, type: 3}
   score: 0
   lives: 3
-  startGameSoundEffect: {fileID: 8300000, guid: bb718760d8b5d0e40be27cc6dc501430, type: 3}
 --- !u!1001 &5963888843228284751
 PrefabInstance:
   m_ObjectHideFlags: 0

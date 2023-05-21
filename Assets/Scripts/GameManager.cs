@@ -93,7 +93,7 @@ public sealed class GameManager : Singleton<GameManager>
         
         void EasyGame()
         {
-            ItemSpawner.current?.StartSpawning(4f, 0.1f, _easyItems);
+            ItemSpawner.current?.StartSpawning(0.5f, 0.1f, _easyItems);
         }
 
         void MediumGame()
