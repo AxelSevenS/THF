@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4275651654610173390}
   - component: {fileID: 4275651654611500526}
   - component: {fileID: 4275651654612467502}
-  - component: {fileID: 837222211732706094}
   - component: {fileID: 3609794192774987156}
   - component: {fileID: 1570196875441789289}
+  - component: {fileID: 22471355307374766}
   m_Layer: 3
   m_Name: Eggplant
   m_TagString: Item
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4275651654610461166}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -7.214, y: 0, z: 96.92895}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,20 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &837222211732706094
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4275651654610461166}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.13
-  m_Height: 0.69
-  m_Direction: 1
-  m_Center: {x: -0.000000029802322, y: 0.28337216, z: 0}
 --- !u!54 &3609794192774987156
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,8 +114,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e977ec5291ccc4784efb2e65c53569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 3609794192774987156}
   sliceSound: {fileID: 8300000, guid: 33f2a9333e356314f8d4950a0ead7e88, type: 3}
   pitchRange: 0.05
-  sliceEffect: {fileID: 0}
+  sliceEffect: {fileID: 6262200338257291356, guid: 72e8d3ab74e80ea40bf042d15bfd4eec, type: 3}
   sliceEffectDuration: 5
-  rb: {fileID: 3609794192774987156}
+--- !u!135 &22471355307374766
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4275651654610461166}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.24
+  m_Center: {x: -0.000000029802322, y: 0.28337216, z: 0}

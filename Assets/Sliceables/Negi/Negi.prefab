@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8326875147741909184}
   - component: {fileID: 8326875147740582112}
   - component: {fileID: 8326875147739484704}
-  - component: {fileID: 3336088356647622286}
   - component: {fileID: 3097218086918877421}
   - component: {fileID: 5183835419927740075}
+  - component: {fileID: 4044740255518139254}
   m_Layer: 3
   m_Name: Negi
   m_TagString: Item
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8326875147741482208}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -7.711478, y: 0, z: 96.92895}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 2.6, y: 2.6, z: 2.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,20 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3336088356647622286
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8326875147741482208}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.15
-  m_Height: 0.97
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.39685392, z: 0}
 --- !u!54 &3097218086918877421
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,8 +114,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b77b7f0aed3540f4cbad54258f0f2a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 3097218086918877421}
   sliceSound: {fileID: 8300000, guid: 33f2a9333e356314f8d4950a0ead7e88, type: 3}
   pitchRange: 0.1
-  sliceEffect: {fileID: 0}
+  sliceEffect: {fileID: 8399605702270125857, guid: b897ca321e83a5844aafa79c4817a692, type: 3}
   sliceEffectDuration: 5
-  rb: {fileID: 3097218086918877421}
+--- !u!135 &4044740255518139254
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8326875147741482208}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.34
+  m_Center: {x: 0, y: 0.39685392, z: 0}

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2355893063464129167}
   - component: {fileID: 2355893063464932015}
   - component: {fileID: 2355893063466029167}
-  - component: {fileID: 3768170704180698278}
   - component: {fileID: 1273734630453572690}
   - component: {fileID: 6624910993008951135}
+  - component: {fileID: 1573959586122205780}
   m_Layer: 3
   m_Name: Bamboo
   m_TagString: Item
@@ -86,20 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3768170704180698278
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2355893063463833263}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.27
-  m_Height: 2.21
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9706587, z: 0.0000019073485}
 --- !u!54 &1273734630453572690
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,8 +114,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aba8ced59028844a83927e08ddbf37f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 1273734630453572690}
   sliceSound: {fileID: 8300000, guid: 2da315d11c16b1f41920f5bf1a46ccf4, type: 3}
   pitchRange: 0.25
-  sliceEffect: {fileID: 0}
+  sliceEffect: {fileID: 657012343404915030, guid: ca1efe7bafed9f24f97abdca43179ff6, type: 3}
   sliceEffectDuration: 5
-  rb: {fileID: 1273734630453572690}
+--- !u!135 &1573959586122205780
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2355893063463833263}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.59
+  m_Center: {x: 0, y: 0.9706587, z: 0.0000019073485}

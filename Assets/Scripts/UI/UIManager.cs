@@ -26,6 +26,12 @@ public sealed class UIManager : Singleton<UIManager>
     [SerializeField] private LifeUI life2UI;
     [SerializeField] private LifeUI life3UI;
 
+    [Header("Pause Effects")]
+    
+    [SerializeField] private GameObject pauseUI;
+    [SerializeField] private Button pauseButton;
+    [SerializeField] private Button volumeButton;
+
     [Header("End Game Effects")]
 
     [SerializeField] private GameObject endGameUI;
@@ -43,6 +49,9 @@ public sealed class UIManager : Singleton<UIManager>
         titleText.text = "Game Over";
         endGameScoreText.text = $"Score: {GameManager.current.score}";
         Time.timeScale = 0f;
+
+        DisablePause();
+        VolumeManager.current.DisableVolumeMenu();
     }
 
     public void DisplayGameWon()
@@ -51,6 +60,33 @@ public sealed class UIManager : Singleton<UIManager>
         titleText.text = "You Won!";
         endGameScoreText.text = $"Score: {GameManager.current.score}";
         Time.timeScale = 0f;
+
+        DisablePause();
+        VolumeManager.current.DisableVolumeMenu();
+    }
+
+    public void EnablePause()
+    {
+        Time.timeScale = 0f;
+        pauseUI.SetActive(true);
+    }
+
+    public void DisablePause()
+    {
+        Time.timeScale = 1f;
+        pauseUI.SetActive(false);
+        VolumeManager.current.DisableVolumeMenu();
+    }
+
+    public void TogglePause()
+    {
+        if ( pauseUI.activeSelf ){
+            DisablePause();
+        }
+        else
+        {
+            EnablePause();
+        }
     }
 
 
@@ -79,6 +115,8 @@ public sealed class UIManager : Singleton<UIManager>
     {
         scoreUI.SetActive(true);
         livesUI.SetActive(true);
+        pauseButton.gameObject.SetActive(true);
+        volumeButton.gameObject.SetActive(false);
         endGameUI.SetActive(false);
     }
 
@@ -86,6 +124,8 @@ public sealed class UIManager : Singleton<UIManager>
     {
         scoreUI.SetActive(false);
         livesUI.SetActive(false);
+        pauseButton.gameObject.SetActive(false);
+        volumeButton.gameObject.SetActive(true);
         endGameUI.SetActive(false);
     }
 

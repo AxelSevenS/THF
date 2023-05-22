@@ -9,6 +9,8 @@ public sealed class GameManager : Singleton<GameManager>
 {
 
 
+    public AudioSource audioSource;
+
     [SerializeField] private Camera environmentCamera;
     [SerializeField] private Camera sliceCamera;
 
@@ -24,6 +26,9 @@ public sealed class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject[] _easyItems;
     [SerializeField] private GameObject[] _mediumItems;
     [SerializeField] private GameObject[] _hardItems;
+
+    [SerializeField] private GameObject[] _bonusItems;
+    [SerializeField] private GameObject[] _penaltyItems;
 
     [Header("Game Variables")]
 
@@ -59,6 +64,10 @@ public sealed class GameManager : Singleton<GameManager>
         Instantiate(_hardOptionPrefab, _menuContainer.transform);
 
         UIManager.current?.DisableGameUI();
+
+        audioSource.Stop();
+        
+        ResetSliceables();
     }
 
     public void StartGame()
@@ -72,7 +81,7 @@ public sealed class GameManager : Singleton<GameManager>
 
         UIManager.current?.EnableGameUI();
 
-        switch( currentDifficulty )
+        switch (currentDifficulty)
         {
             case GameDifficulty.Easy:
                 EasyGame();
@@ -90,20 +99,33 @@ public sealed class GameManager : Singleton<GameManager>
 
         score = 0;
         UIManager.current?.UpdateScore();
-        
+
+        audioSource.Play();
+
+        ResetSliceables();
+
         void EasyGame()
         {
-            ItemSpawner.current?.StartSpawning(0.5f, 0.1f, _easyItems);
+            ItemSpawner.current?.StartSpawning(1f, 0.1f, _easyItems, _bonusItems, _penaltyItems, 0.10f, 0.05f);
         }
 
         void MediumGame()
         {
-            ItemSpawner.current?.StartSpawning(3f, 0.2f, _mediumItems);
+            ItemSpawner.current?.StartSpawning(0.6f, 0.15f, _mediumItems, _bonusItems, _penaltyItems, 0.05f, 0.05f);
         }
 
         void HardGame()
         {
-            ItemSpawner.current?.StartSpawning(1f, 0.4f, _hardItems);
+            ItemSpawner.current?.StartSpawning(0.35f, 0.3f, _hardItems, _bonusItems, _penaltyItems, 0.05f, 0.10f);
+        }
+    }
+
+    private static void ResetSliceables()
+    {
+        Sliceable[] sliceables = SliceManager.sliceables.ToArray();
+        foreach (Sliceable sliceable in sliceables)
+        {
+            GameUtility.SafeDestroy(sliceable.gameObject);
         }
     }
 
@@ -137,9 +159,15 @@ public sealed class GameManager : Singleton<GameManager>
         UIManager.current?.UpdateScore();
     }
 
-    public void RemoveLife()
+    public void AddLife(int amount = 1)
     {
-        lives--;
+        lives = Mathf.Clamp(lives + amount, 0, 3);
+        UIManager.current?.UpdateLives();
+    }
+
+    public void RemoveLife(int amount = 1)
+    {
+        lives = Mathf.Clamp(lives - amount, 0, 3);
         UIManager.current?.UpdateLives();
         if ( lives <= 0 )
         {

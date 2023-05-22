@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MenuSliceable : Sliceable
+public abstract class MenuSliceable : SliceableRigidbody
 {
     
     public static List<MenuSliceable> menuItems = new List<MenuSliceable>();
-
-
-
-    [SerializeField] private Rigidbody rigidbody;
 
     private bool menuDisabled = false;
 
@@ -31,21 +27,20 @@ public abstract class MenuSliceable : Sliceable
         rigidbody.useGravity = true;
         menuDisabled = true;
         Destroy(gameObject, 10f);
-
-        rigidbody.AddExplosionForce(5f, transform.position, 10f);
+        
+        rigidbody.AddForceAtPosition(Random.insideUnitSphere * 10f, transform.position, ForceMode.Impulse);
+        rigidbody.AddTorque(Random.insideUnitSphere * 10f, ForceMode.Impulse);
     }
 
 
 
     protected override void OnEnable()
     {
-        base.OnEnable();
         menuItems.Add(this);
     }
 
     protected override void OnDisable()
     {
-        base.OnDisable();
         menuItems.Remove(this);
     }
 

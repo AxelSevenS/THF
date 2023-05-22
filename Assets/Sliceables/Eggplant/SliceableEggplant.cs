@@ -12,5 +12,6 @@ public class SliceableEggplant : SliceableRigidbody
     public override void DestroyBehaviour()
     {
         GameManager.current.AddScore(-5, transform.position);
+        GameManager.current.RemoveLife();        
     }
 }

@@ -12,5 +12,6 @@ public class SliceableNegi : SliceableRigidbody
     public override void DestroyBehaviour()
     {
         GameManager.current.AddScore(-4, transform.position);
+        GameManager.current.RemoveLife();
     }
 }

@@ -14,21 +14,22 @@ public sealed class SliceManager : Singleton<SliceManager>, IBeginDragHandler, I
 
     [SerializeField] private Camera camera;
 
-    public float maxSliceDistance;
+    public float maxSliceDistance = 10f;
+    public float minSliceDistance = 0.5f;
 
     [SerializeField] private GameObject slicePrefab;
     [SerializeField] private LayerMask sliceLayerMask;
-    
-    private TrailRenderer sliceEffect;
-    private float sliceLength;
-    private AudioClip sliceSound;
+
+    [SerializeField] private TrailRenderer sliceEffect;
+    [SerializeField] private float sliceLength;
+    [SerializeField] private AudioClip sliceSound;
 
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         // Create the Trail Renderer Object at the mouse position
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(eventData.position);
         mousePos.z = -1f;
 
         GameObject sliceEffectGO = GameObject.Instantiate(slicePrefab, mousePos, Quaternion.identity);
@@ -40,14 +41,28 @@ public sealed class SliceManager : Singleton<SliceManager>, IBeginDragHandler, I
     public void OnDrag(PointerEventData eventData)
     {
 
-        if ( !sliceEffect )
+        if (sliceEffect == null)
             return;
 
-        // Add a new point to the trail renderer
-        Vector3 mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = -1f;
+        Vector3 initialPos = camera.ScreenToWorldPoint(eventData.position - eventData.delta);
+        Vector3 currentPos = camera.ScreenToWorldPoint(eventData.position);
+        initialPos.z = -1f;
+        currentPos.z = -1f;
 
-        Vector3 direction = mousePos - sliceEffect.transform.position;
+        Vector3 direction = currentPos - initialPos;
+
+        sliceLength += direction.magnitude;
+        sliceEffect.transform.position = currentPos;
+
+
+        if (sliceLength < minSliceDistance)
+            return;
+
+        if (sliceLength > maxSliceDistance)
+        {
+            OnEndDrag(eventData);
+            return;
+        }
 
 
         float radius = .25f;
@@ -59,10 +74,6 @@ public sealed class SliceManager : Singleton<SliceManager>, IBeginDragHandler, I
         {
             sliceable.GetComponent<Sliceable>()?.Slice();
         }
-        
-
-        sliceEffect.transform.position = mousePos;
-        sliceLength += direction.magnitude;
 
         // if (sliceLength > maxSliceDistance)
         //     OnEndDrag(eventData);
@@ -71,8 +82,8 @@ public sealed class SliceManager : Singleton<SliceManager>, IBeginDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
         sliceEffect = null;
+        sliceLength = 0f;
     }
 
     private void AddPoint()

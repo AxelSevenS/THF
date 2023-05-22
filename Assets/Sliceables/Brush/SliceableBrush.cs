@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SliceableBrush : SliceableRigidbody
+public class SliceableBrush : Sliceable
 {
     public override void SliceBehaviour()
     {
@@ -10,7 +10,8 @@ public class SliceableBrush : SliceableRigidbody
         Sliceable[] sliceables = SliceManager.sliceables.ToArray();
         foreach (Sliceable sliceable in sliceables)
         {
-            sliceable?.Slice();
+            if ( !sliceable.isPenalty )
+                sliceable?.Slice();
         }
     }
 

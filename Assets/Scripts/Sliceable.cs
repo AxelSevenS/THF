@@ -12,6 +12,8 @@ public abstract class Sliceable : MonoBehaviour
     [SerializeField] private GameObject sliceEffect;
     [SerializeField] private float sliceEffectDuration = 5f;
 
+    public virtual bool isPenalty => false;
+
     public void Slice() {
 
         if ( !enabled )
@@ -28,20 +30,37 @@ public abstract class Sliceable : MonoBehaviour
             tempGO.transform.position = transform.position;
             AudioSource audioSource = tempGO.AddComponent<AudioSource>();
             audioSource.clip = sliceSound;
+            audioSource.volume = VolumeManager.current.sfxVolume;
             audioSource.pitch = Random.Range(1f - pitchRange, 1f + pitchRange);
             audioSource.Play();
+
+            SliceSoundBehaviour(audioSource);
 
             Destroy(tempGO, sliceSound.length);
         }
 
         if (sliceEffect != null)
         {
-            GameObject sliceEffectInstance = Instantiate(sliceEffect, transform.position, Quaternion.identity);
+            GameObject sliceEffectInstance = Instantiate(sliceEffect, transform.position, transform.rotation);
+
+            SliceEffectBehaviour(sliceEffectInstance);
+
             Destroy(sliceEffectInstance, sliceEffectDuration);
         }
 
         Destroy(gameObject);
     }
+
+    protected virtual void SliceEffectBehaviour(GameObject sliceEffectInstance)
+    {
+        
+    }
+
+    protected virtual void SliceSoundBehaviour(AudioSource audioSource)
+    {
+        
+    }
+
 
     public void Destroy() {
         DestroyBehaviour();
